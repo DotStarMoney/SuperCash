@@ -4,28 +4,51 @@
 
 #define M_2_x_PI M_PI*2
 
+using namespace SuperCash;
+using namespace NSolve;
+
 Sinusoid::Sinusoid(){
 	init();
-}
-
-Sinusoid::Sinusoid(bool linear_, FLOAT_FMT r_, FLOAT_FMT theta_, FLOAT_FMT omega_){
-	init();
-	setParameters(linear_, r_, theta_, omega_);
 }
 
 Sinusoid::~Sinusoid(){
 	//
 }
 
-void Sinusoid::setParameters(bool linear_, FLOAT_FMT r_, FLOAT_FMT theta_, FLOAT_FMT omega_){
+void Sinusoid::setParameters(bool linear_, SC_FLOAT r_, SC_FLOAT theta_, SC_FLOAT omega_){
 	linear = linear_;
 	r = r_;
 	theta = theta_;
 	omega = omega_;
 }
 
-FLOAT_FMT Sinusoid::value(FLOAT_FMT t){
-	FLOAT_FMT arg;
+SC_FLOAT Sinusoid::getR(){
+	return r;
+}
+SC_FLOAT Sinusoid::getTheta(){
+	return theta;
+}
+SC_FLOAT Sinusoid::getOmega(){
+	return omega;
+}
+bool Sinusoid::getLinear(){
+	return linear;
+}
+void Sinusoid::setR(SC_FLOAT r_){
+	r = r_;
+}
+void Sinusoid::setTheta(SC_FLOAT theta_){
+	theta = theta_;
+}
+void Sinusoid::setOmega(SC_FLOAT omega_){
+	omega = omega_;
+}
+void Sinusoid::setLinear(bool linear_){
+	linear = linear_;
+}
+
+SC_FLOAT Sinusoid::value(SC_FLOAT t){
+	SC_FLOAT arg;
 	arg = theta + omega * t;
 	if (linear){
 		return sin(arg) * r;
@@ -35,21 +58,26 @@ FLOAT_FMT Sinusoid::value(FLOAT_FMT t){
 	}
 }
 
-FLOAT_FMT Sinusoid::getLLBFGamma(FLOAT_FMT intervalA, FLOAT_FMT intervalB){
-	FLOAT_FMT testDeriv;
-	FLOAT_FMT ptSlope;
-	FLOAT_FMT yA;
-	FLOAT_FMT xA;
-	FLOAT_FMT a;
-	FLOAT_FMT b;
-	FLOAT_FMT delta;
-	FLOAT_FMT sinLBF;
+SC_FLOAT Sinusoid::getLLBFGamma(SC_FLOAT intervalA, SC_FLOAT intervalB, bool lowerBound){
+	SC_FLOAT testDeriv;
+	SC_FLOAT ptSlope;
+	SC_FLOAT yA;
+	SC_FLOAT xA;
+	SC_FLOAT a;
+	SC_FLOAT b;
+	SC_FLOAT delta;
+	SC_FLOAT sinLBF;
 
 	intervalA = intervalA*omega + theta;
 	intervalB = intervalB*omega + theta;
 
 	a = M_PI - intervalB;
 	b = M_PI - intervalA;
+
+	if ((r < 0) ^ (lowerBound == false)){
+		a += M_PI;
+		b += M_PI;
+	}
 
 	delta = b - a;
 	b = fmod(b, M_2_x_PI);
@@ -70,7 +98,7 @@ FLOAT_FMT Sinusoid::getLLBFGamma(FLOAT_FMT intervalA, FLOAT_FMT intervalB){
 
 	ptSlope = (yA - sin(b)) / (xA - b);
 	
-	sinLBF = -fmax(testDeriv, ptSlope) * omega * r;
+	sinLBF = -fmax(testDeriv, ptSlope) * omega * abs(r) * (lowerBound ? 1 : -1);
 	return sinLBF * (linear ? (b - a) : 1);
 }
 
