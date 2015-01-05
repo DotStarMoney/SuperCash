@@ -200,7 +200,7 @@ int CompositeSinusoid::findRootsInterval(FLOAT_FMT t_end, FLOAT_FMT** roots){
 							ptA = value(prevLastEx, 2, i);
 							ptB = value(firstEx, 2, i);
 							if (((firstExRootIndex - prevLastExRootIndex) != 1) || ((((signbit(ptA) ^ signbit(ptB)) & 1) == 1))){
-								//
+								//ss
 							}
 							else{
 								// gotta numb them gums!

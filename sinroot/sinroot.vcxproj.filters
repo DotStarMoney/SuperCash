@@ -21,15 +21,9 @@
     <ClCompile Include="sinusoid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="compositesinusoid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sinusoid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="compositesinusoid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="float_format.h">

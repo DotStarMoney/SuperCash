@@ -2,6 +2,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#define M_2_x_PI M_PI*2
+
 Sinusoid::Sinusoid(){
 	init();
 }
@@ -18,128 +20,58 @@ Sinusoid::~Sinusoid(){
 void Sinusoid::setParameters(bool linear_, FLOAT_FMT r_, FLOAT_FMT theta_, FLOAT_FMT omega_){
 	linear = linear_;
 	r = r_;
-	theta = fmod(theta_, 2*M_PI);
+	theta = theta_;
 	omega = omega_;
-
-	d1_r = r * omega;
-	d2_r = -d1_r * omega;
-
-	d2_l_r1 = 2 * d1_r;
-	d2_l_r2 = d2_r;
-
-	if (theta >= M_PI_2){
-		sroot1 = M_PI_2 - theta + M_PI;
-	}
-	else{
-		sroot1 = M_PI_2 - theta;
-	}
-	
-	if (linear){
-		if((theta == 0) || (signbit(value(0, 1)) != signbit(value(sinusDerivRoot(1), 1)))){
-			linRootOffset = true;
-		}
-		else{
-			linRootOffset = false;
-		}
-	}
 }
 
-FLOAT_FMT Sinusoid::value(FLOAT_FMT t, int deriv){
+FLOAT_FMT Sinusoid::value(FLOAT_FMT t){
 	FLOAT_FMT arg;
 	arg = theta + omega * t;
 	if (linear){
-		switch (deriv){
-		case 0:
-			return r*t*sin(arg);
-		case 1:
-			return r*(sin(arg) + omega*t*cos(arg));
-		case 2:
-			return d2_l_r1*cos(arg) + d2_l_r2*t*sin(arg);
-		}
+		return sin(arg) * r;
 	}
 	else{
-		switch (deriv){
-		case 0:
-			return r*sin(arg);
-		case 1:
-			return d1_r*cos(arg);
-		case 2:
-			return d2_r*sin(arg);
-		}
+		return t * sin(arg) * r;
 	}
 }
 
-FLOAT_FMT Sinusoid::sinusDerivRoot(int root){
-	return (sroot1 + (root - 1) * M_PI) / omega;
-}
-	
-FLOAT_FMT Sinusoid::linearSinusDerivRoot(int root){
-	FLOAT_FMT root_x;
-	FLOAT_FMT last_root_x;
-	
-	if (root >= 1){
-		if (linRootOffset){
-			root--;
-			if (root <= 0){
-				root_x = 0;
-			}
-			else{
-				root_x = sinusDerivRoot(root);
-			}
-		}
-		else{
-			root_x = sinusDerivRoot(root);
-		}
+FLOAT_FMT Sinusoid::getLLBFGamma(FLOAT_FMT intervalA, FLOAT_FMT intervalB){
+	FLOAT_FMT testDeriv;
+	FLOAT_FMT ptSlope;
+	FLOAT_FMT yA;
+	FLOAT_FMT xA;
+	FLOAT_FMT a;
+	FLOAT_FMT b;
+	FLOAT_FMT delta;
+	FLOAT_FMT sinLBF;
+
+	intervalA = intervalA*omega + theta;
+	intervalB = intervalB*omega + theta;
+
+	a = M_PI - intervalB;
+	b = M_PI - intervalA;
+
+	delta = b - a;
+	b = fmod(b, M_2_x_PI);
+	a = b - delta;
+
+	testDeriv = cos(b);
+	if (a <= -1){
+		yA = -1;
+	}
+	else if (a <= 0){
+		yA = a;
 	}
 	else{
-		if (!linRootOffset){
-			root++;
-			if (root > 0){
-				root_x = 0;
-			}
-			else{
-				root_x = sinusDerivRoot(root);
-			}
-		}
-		else{
-			root_x = sinusDerivRoot(root);
-		}
+		yA = sin(a);
 	}
 
+	xA = fmax(a, -1);
+
+	ptSlope = (yA - sin(b)) / (xA - b);
 	
-	do {
-		last_root_x = root_x;
-		root_x -= value(root_x, 1) / value(root_x, 2);
-
-	} while (!FLOAT_PREC_EQL(root_x, last_root_x));
-	
-	return root_x;
-}
-
-bool Sinusoid::isConst(){
-	if (omega != 0){
-		return false;
-	}
-	else{
-		return true;
-	}
-}
-
-bool Sinusoid::isLinear(){
-	return linear;
-}
-
-FLOAT_FMT Sinusoid::derivRoot(int root){
-	if (linear){
-		return linearSinusDerivRoot(root);
-	}
-	else{
-		return sinusDerivRoot(root);
-	}
-}
-
-FLOAT_FMT Sinusoid::getOmega(){
-	return omega;
+	sinLBF = -fmax(testDeriv, ptSlope) * omega * r;
+	return sinLBF * (linear ? (b - a) : 1);
 }
 
 void Sinusoid::init(){

@@ -64,12 +64,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="compositesinusoid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sinusoid.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="compositesinusoid.h" />
     <ClInclude Include="float_format.h" />
     <ClInclude Include="sinusoid.h" />
   </ItemGroup>
