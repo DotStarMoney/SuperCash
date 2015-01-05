@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A1FC975C-12D4-4ECA-9ACE-1B18E69CCD64}</ProjectGuid>
     <RootNamespace>sinroot</RootNamespace>
+    <ProjectName>SuperCash</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -65,11 +66,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pointtolinecollision.cpp" />
+    <ClCompile Include="rootsolve.cpp" />
     <ClCompile Include="sinusoid.cpp" />
+    <ClCompile Include="vector2d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="float_format.h" />
+    <ClInclude Include="pointtolinecollision.h" />
+    <ClInclude Include="rootsolve.h" />
     <ClInclude Include="sinusoid.h" />
+    <ClInclude Include="NFunction.h" />
+    <ClInclude Include="vector2d.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

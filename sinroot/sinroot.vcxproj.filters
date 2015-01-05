@@ -13,21 +13,54 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\nsolve">
+      <UniqueIdentifier>{5d4088b2-5624-4ad6-ab3e-2e5313d9dbd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nsolve">
+      <UniqueIdentifier>{2e6d7d27-6671-4948-91d2-adcd01d09e58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nsolve\model">
+      <UniqueIdentifier>{2464d963-f091-4c46-845c-bca80883ac3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nsolve\model">
+      <UniqueIdentifier>{1a1ae719-44b5-4b50-9ec9-3ba143f9ef98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sinusoid.cpp">
+      <Filter>Source Files\nsolve</Filter>
+    </ClCompile>
+    <ClCompile Include="vector2d.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pointtolinecollision.cpp">
+      <Filter>Source Files\nsolve\model</Filter>
+    </ClCompile>
+    <ClCompile Include="rootsolve.cpp">
+      <Filter>Source Files\nsolve</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sinusoid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="float_format.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sinusoid.h">
+      <Filter>Header Files\nsolve</Filter>
+    </ClInclude>
+    <ClInclude Include="NFunction.h">
+      <Filter>Header Files\nsolve</Filter>
+    </ClInclude>
+    <ClInclude Include="pointtolinecollision.h">
+      <Filter>Header Files\nsolve\model</Filter>
+    </ClInclude>
+    <ClInclude Include="vector2d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rootsolve.h">
+      <Filter>Header Files\nsolve</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

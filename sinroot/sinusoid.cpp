@@ -6,9 +6,15 @@
 
 using namespace SuperCash;
 using namespace NSolve;
+using namespace Model;
 
 Sinusoid::Sinusoid(){
 	init();
+}
+
+Sinusoid::Sinusoid(bool linear_, SC_FLOAT r_, SC_FLOAT theta_, SC_FLOAT omega_){
+	init();
+	setParameters(linear_, r_, theta_, omega_);
 }
 
 Sinusoid::~Sinusoid(){
